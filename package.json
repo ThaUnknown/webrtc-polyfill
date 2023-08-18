@@ -1,0 +1,17 @@
+{
+  "name": "webrtc-polyfill",
+  "version": "1.0.0",
+  "description": "",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "node-datachannel": "github:murat-dogan/node-datachannel#polyfill",
+    "node-domexception": "^1.0.0"
+  }
+}
