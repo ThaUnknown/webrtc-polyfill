@@ -5,8 +5,8 @@
   "type": "module",
   "main": "index.js",
   "scripts": {
-    "test": "concurrently --kill-others \"python test/wpt serve\" \"node test/wpt.js\"",
-    "make-hosts": "python test/wpt make-hosts-file"
+    "test": "concurrently --kill-others \"python test/wpt/wpt.py serve\" \"node test/wpt.js\"",
+    "make-hosts": "python test/wpt/wpt.py make-hosts-file"
   },
   "keywords": [],
   "author": "",
