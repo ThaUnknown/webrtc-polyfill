@@ -13,5 +13,8 @@
   "dependencies": {
     "node-datachannel": "github:murat-dogan/node-datachannel#polyfill",
     "node-domexception": "^1.0.0"
+  },
+  "devDependencies": {
+    "wpt-runner": "^5.0.0"
   }
 }

@@ -1,0 +1,3 @@
+[submodule "test/wpt"]
+	path = test/wpt
+	url = https://github.com/MattiasBuelens/wpt
