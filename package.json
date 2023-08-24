@@ -5,16 +5,18 @@
   "type": "module",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "concurrently --kill-others \"python test/wpt serve\" \"node test/wpt.js\"",
+    "make-hosts": "python test/wpt make-hosts-file"
   },
   "keywords": [],
   "author": "",
   "license": "MIT",
   "dependencies": {
+    "concurrently": "^8.2.1",
     "node-datachannel": "github:murat-dogan/node-datachannel#polyfill",
     "node-domexception": "^1.0.0"
   },
   "devDependencies": {
-    "wpt-runner": "^5.0.0"
+    "jsdom": "^22.1.0"
   }
 }
