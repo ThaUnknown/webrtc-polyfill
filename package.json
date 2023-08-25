@@ -5,7 +5,7 @@
   "type": "module",
   "main": "index.js",
   "scripts": {
-    "test": "concurrently --kill-others \"python test/wpt/wpt.py serve\" \"node test/wpt.js\"",
+    "test": "concurrently --kill-others --raw \"python test/wpt/wpt.py serve\" \"tape test/wpt.js | tap-spec\"",
     "make-hosts": "python test/wpt/wpt.py make-hosts-file"
   },
   "keywords": [],
@@ -17,6 +17,8 @@
     "node-domexception": "^1.0.0"
   },
   "devDependencies": {
-    "jsdom": "^22.1.0"
+    "jsdom": "^22.1.0",
+    "tap-spec": "^5.0.0",
+    "tape": "^5.6.6"
   }
 }

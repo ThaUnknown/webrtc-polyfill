@@ -1,46 +1,57 @@
-import { readdir } from 'node:fs/promises'
+import test from 'tape'
+import { JSDOM, VirtualConsole } from 'jsdom'
 
-import { JSDOM } from 'jsdom'
+import { readdir } from 'node:fs/promises'
 
 import WebRTC from '../index.js'
 
+const EXCLUSIONS = [
+  'receiver-track-live.https.html', // navigator.getUserMedia
+  'recvonly-transceiver-can-become-sendrecv.https.html', // navigator.getUserMedia
+  'RollbackEvents.https.html', // navigator.getUserMedia
+  'RTCCertificate-postMessage.html', // utility file
+  // following require getConfig/setConfig which is not implemented
+  'RTCConfiguration-iceServers.html',
+  'RTCConfiguration-iceTransportPolicy.html',
+  'RTCConfiguration-rtcpMuxPolicy.html'
+]
+
 const WPT_SERVER_URL = 'http://web-platform.test:8000'
-
 const WPT_FILES_LIST = await readdir('./test/wpt/webrtc')
-
-const WPT_TEST_PATH_LIST = WPT_FILES_LIST.filter(f => f.endsWith('.html'))
+const WPT_TEST_PATH_LIST = WPT_FILES_LIST.filter(f => f.endsWith('.html') && !EXCLUSIONS.includes(f))
 
 // wait for WPT to load
-await new Promise(resolve => setTimeout(resolve, 15000))
+await new Promise(resolve => setTimeout(resolve, 8000))
 
-// call runTest for each test path
-for (const testPath of WPT_TEST_PATH_LIST) {
-  console.log('Running test:', testPath)
-  const { window } = await JSDOM.fromURL(WPT_SERVER_URL + '/webrtc/' + testPath, {
-    runScripts: 'dangerously', resources: 'usable'
-  })
-
-  Object.assign(window, WebRTC)
-
-  const result = await new Promise(resolve => {
-    const returnObject = []
-    window.addEventListener('load', () => {
-      window.add_result_callback(test => {
-        console.log(test)
-        // Meaning of status
-        // 0: PASS (test passed)
-        // 1: FAIL (test failed)
-        // 2: TIMEOUT (test timed out)
-        // 3: PRECONDITION_FAILED (test skipped)
-        returnObject.push(test)
+test('WebRTC Web Platform Tests', async t => {
+  // call runTest for each test path
+  for (const testPath of WPT_TEST_PATH_LIST) {
+    try {
+      const virtualConsole = new VirtualConsole()
+      virtualConsole.sendTo(console)
+      const { window } = await JSDOM.fromURL(WPT_SERVER_URL + '/webrtc/' + testPath, {
+        runScripts: 'dangerously', resources: 'usable', omitJSDOMErrors: true, virtualConsole
       })
 
-      window.add_completion_callback(() => {
-        window.close()
-        resolve(returnObject)
-      })
-    })
-  })
+      Object.assign(window, WebRTC)
 
-  console.log('Results:', result)
-}
+      t.comment(testPath)
+
+      await new Promise(resolve => {
+        window.addEventListener('load', () => {
+          window.add_completion_callback((tests, status, records) => {
+            for (const { name, status, message, stack } of tests) {
+              t.comment(name)
+              t.ok(status === 0, (message || name) + (stack || ''))
+            }
+            window.close()
+            resolve()
+          })
+        })
+      })
+    } catch (e) {
+      t.error(e)
+    }
+  }
+  t.end()
+})
