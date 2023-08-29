@@ -8,6 +8,11 @@
     "test": "concurrently --kill-others --raw \"python test/wpt/wpt.py serve\" \"tape test/wpt.js | tap-spec\"",
     "make-hosts": "python test/wpt/wpt.py make-hosts-file"
   },
+  "files": [
+    "lib/*",
+    "index.js",
+    "polyfill.js"
+  ],
   "keywords": [],
   "author": "",
   "license": "MIT",
