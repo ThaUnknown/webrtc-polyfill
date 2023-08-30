@@ -6,7 +6,9 @@
   "main": "index.js",
   "scripts": {
     "test": "concurrently --kill-others --raw \"python test/wpt/wpt.py serve\" \"tape test/wpt.js | tap-spec\"",
-    "make-hosts": "python test/wpt/wpt.py make-hosts-file"
+    "wrtc:test": "tape test/wpt.js | tap-spec",
+    "wpt:make-hosts": "python test/wpt/wpt.py make-hosts-file",
+    "wpt:server": "python test/wpt/wpt.py serve"
   },
   "files": [
     "lib/*",
@@ -17,13 +19,14 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "concurrently": "^8.2.1",
     "node-datachannel": "github:murat-dogan/node-datachannel#polyfill",
     "node-domexception": "^1.0.0"
   },
   "devDependencies": {
+    "concurrently": "^8.2.1",
     "jsdom": "^22.1.0",
     "tap-spec": "^5.0.0",
-    "tape": "^5.6.6"
+    "tape": "^5.6.6",
+    "uint8-util": "^2.2.3"
   }
 }

@@ -1,46 +1,21 @@
 import test from 'tape'
 import { JSDOM, VirtualConsole } from 'jsdom'
-import DOMException from 'node-domexception'
 
 import { readdir } from 'node:fs/promises'
 
-import WebRTC from '../index.js'
+import { overwriteGlobals } from './util.js'
+import { EXCLUSIONS, WPT_SERVER_URL } from './constants.js'
 
-const EXCLUSIONS = [
-  // navigator.getUserMedia
-  'receiver-track-live.https.html',
-  'recvonly-transceiver-can-become-sendrecv.https.html',
-  'RollbackEvents.https.html',
-  'RTCPeerConnection-add-track-no-deadlock.https.html',
-  'RTCIceConnectionState-candidate-pair.https.html',
-  'RTCPeerConnection-add-track-no-deadlock.https.html',
-  'RTCDTMFSender-ontonechange-long.https.html',
-  'RTCPeerConnection-connectionState.https.html',
-  // MediaStream
-  'RTCPeerConnection-capture-video.https.html',
-  'RTCDtlsTransport-state.html',
-  // AudioContext
-  'RTCDtlsTransport-getRemoteCertificates.html',
-  // utility files
-  'RTCCertificate-postMessage.html',
-  // following require getConfig/setConfig which is not implemented
-  'RTCConfiguration-iceServers.html',
-  'RTCConfiguration-iceTransportPolicy.html',
-  'RTCConfiguration-rtcpMuxPolicy.html',
-  // mysterious process exits
-  'RTCPeerConnection-addIceCandidate.html'
-]
-
-const WPT_SERVER_URL = 'http://web-platform.test:8000'
-const WPT_FILES_LIST = await readdir('./test/wpt/webrtc')
-const WPT_TEST_PATH_LIST = WPT_FILES_LIST.filter(f => f.endsWith('.html') && !EXCLUSIONS.includes(f))
-// const WPT_TEST_PATH_LIST = ['RTCPeerConnection-createDataChannel.html']
+const files = await readdir('./test/wpt/webrtc')
+const pathList = files.filter(f => f.endsWith('.html') && !EXCLUSIONS.includes(f))
+// const pathList = ['RTCPeerConnection-add-track-no-deadlock.https.html']
 
 // wait for WPT to load
 await new Promise(resolve => setTimeout(resolve, 8000))
 
 // call runTest for each test path
-for (const testPath of WPT_TEST_PATH_LIST) {
+for (const [i, testPath] of pathList.entries()) {
+  const isLast = i === pathList.length - 1
   test(testPath, async t => {
     try {
       const virtualConsole = new VirtualConsole()
@@ -49,18 +24,16 @@ for (const testPath of WPT_TEST_PATH_LIST) {
         runScripts: 'dangerously', resources: 'usable', omitJSDOMErrors: true, virtualConsole
       })
 
-      Object.assign(window, WebRTC)
-      // JSDOM overwrites these lol
-      window.TypeError = TypeError
-      window.DOMException = DOMException
+      // JSDom is a different VM, and WPT does strict checking, so to pass tests these need to be overwritten, this is an awful idea!
+      overwriteGlobals(window)
 
-      await new Promise(resolve => {
+      const e = await new Promise(resolve => {
         const cleanup = e => {
           window.close()
-          resolve()
-          t.end(e)
+          resolve(e)
         }
         window.addEventListener('load', () => {
+          overwriteGlobals(window)
           window.add_completion_callback((tests, status, records) => {
             for (const { name, status, message, stack } of tests) {
               t.comment(name)
@@ -72,8 +45,10 @@ for (const testPath of WPT_TEST_PATH_LIST) {
           process.once('uncaughtException', cleanup)
         })
       })
+      t.end(e)
     } catch (e) {
       t.end(e)
     }
+    if (isLast) process.exit()
   })
 }
