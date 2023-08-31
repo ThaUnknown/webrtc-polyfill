@@ -18,6 +18,9 @@
   "keywords": [],
   "author": "",
   "license": "MIT",
+  "homepage": "https://github.com/ThaUnknown/webrtc-polyfill#readme",
+  "bugs": "https://github.com/ThaUnknown/webrtc-polyfill/issues",
+  "repository": "https://github.com/ThaUnknown/webrtc-polyfill.git",
   "dependencies": {
     "node-datachannel": "github:murat-dogan/node-datachannel#polyfill",
     "node-domexception": "^1.0.0"
