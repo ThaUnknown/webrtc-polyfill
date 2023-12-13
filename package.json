@@ -1,6 +1,6 @@
 {
   "name": "webrtc-polyfill",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "",
   "type": "module",
   "main": "index.js",
@@ -22,7 +22,7 @@
   "bugs": "https://github.com/ThaUnknown/webrtc-polyfill/issues",
   "repository": "https://github.com/ThaUnknown/webrtc-polyfill.git",
   "dependencies": {
-    "node-datachannel": "0.5.0-dev",
+    "node-datachannel": "0.5.2",
     "node-domexception": "^1.0.0"
   },
   "devDependencies": {
