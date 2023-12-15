@@ -8,15 +8,16 @@ import { EXCLUSIONS, WPT_SERVER_URL } from './constants.js'
 
 const files = await readdir('./test/wpt/webrtc')
 const pathList = files.filter(f => f.endsWith('.html') && !EXCLUSIONS.includes(f))
-// const pathList = ['RTCPeerConnection-add-track-no-deadlock.https.html']
+// const pathList = ['no-media-call.html']
 
 // wait for WPT to load
-await new Promise(resolve => setTimeout(resolve, 8000))
+await new Promise(resolve => setTimeout(resolve, 3000))
 
 // call runTest for each test path
 for (const [i, testPath] of pathList.entries()) {
   const isLast = i === pathList.length - 1
   test(testPath, async t => {
+    await new Promise(resolve => setTimeout(resolve, 5000))
     try {
       const virtualConsole = new VirtualConsole()
       virtualConsole.sendTo(console)
@@ -31,6 +32,8 @@ for (const [i, testPath] of pathList.entries()) {
         const cleanup = e => {
           window.close()
           resolve(e)
+          process.off('unhandledRejection', cleanup)
+          process.off('uncaughtException', cleanup)
         }
         window.addEventListener('load', () => {
           overwriteGlobals(window)
