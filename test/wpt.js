@@ -8,10 +8,10 @@ import { EXCLUSIONS, WPT_SERVER_URL } from './constants.js'
 
 const files = await readdir('./test/wpt/webrtc')
 const pathList = files.filter(f => f.endsWith('.html') && !EXCLUSIONS.includes(f))
-// const pathList = ['no-media-call.html']
+// const pathList = ['RTCDataChannel-send.html', 'RTCIceTransport.html']
 
 // wait for WPT to load
-await new Promise(resolve => setTimeout(resolve, 3000))
+await new Promise(resolve => setTimeout(resolve, 8000))
 
 // call runTest for each test path
 for (const [i, testPath] of pathList.entries()) {
@@ -22,11 +22,15 @@ for (const [i, testPath] of pathList.entries()) {
       const virtualConsole = new VirtualConsole()
       virtualConsole.sendTo(console)
       const { window } = await JSDOM.fromURL(WPT_SERVER_URL + '/webrtc/' + testPath, {
-        runScripts: 'dangerously', resources: 'usable', omitJSDOMErrors: true, virtualConsole
+        runScripts: 'dangerously',
+        resources: 'usable',
+        omitJSDOMErrors: true,
+        virtualConsole,
+        beforeParse: window => {
+          // JSDom is a different VM, and WPT does strict checking, so to pass tests these need to be overwritten, this is an awful idea!
+          overwriteGlobals(window)
+        }
       })
-
-      // JSDom is a different VM, and WPT does strict checking, so to pass tests these need to be overwritten, this is an awful idea!
-      overwriteGlobals(window)
 
       const e = await new Promise(resolve => {
         const cleanup = e => {
