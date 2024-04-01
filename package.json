@@ -1,9 +1,22 @@
 {
   "name": "webrtc-polyfill",
-  "version": "1.0.7",
-  "description": "",
+  "version": "1.0.8",
+  "description": "High performance WebRTC polyfill for Node.JS via libdatachannel using Node Native/NAPI.",
   "type": "module",
-  "main": "index.js",
+  "exports": {
+    "node": {
+      "import": "./index.js",
+      "polyfill": "./polyfill.js"
+    },
+    "default": {
+      "import": "./index.js",
+      "polyfill": "./polyfill.js"
+    },
+    "browser": {
+      "import": "./browser.js",
+      "polyfill": "./polyfill-browser.js"
+    }
+  },
   "scripts": {
     "test": "concurrently --kill-others --raw \"npm run wpt:server\" \"npm run wrtc:test\"",
     "wrtc:test": "tape test/wpt.js | tap-spec",
@@ -13,7 +26,9 @@
   "files": [
     "lib/*",
     "index.js",
-    "polyfill.js"
+    "browser.js",
+    "polyfill.js",
+    "polyfill-browser.js"
   ],
   "keywords": [],
   "author": "",
