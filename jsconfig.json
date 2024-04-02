@@ -11,6 +11,7 @@
     "target": "ESNext",
     "moduleResolution": "node",
     "module": "ESNext",
+		"types": ["@types/webrtc"],
     "allowSyntheticDefaultImports": true
 	}
 }
