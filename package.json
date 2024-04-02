@@ -1,6 +1,6 @@
 {
   "name": "webrtc-polyfill",
-  "version": "1.0.11",
+  "version": "1.0.12",
   "description": "High performance WebRTC polyfill for Node.JS via libdatachannel using Node Native/NAPI.",
   "type": "module",
   "types": "./types.d.ts",
