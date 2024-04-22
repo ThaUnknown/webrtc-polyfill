@@ -1,28 +1,26 @@
 {
   "name": "webrtc-polyfill",
-  "version": "1.0.14",
+  "version": "1.0.15",
   "description": "High performance WebRTC polyfill for Node.JS via libdatachannel using Node Native/NAPI.",
   "type": "module",
   "types": "./types.d.ts",
+  "browser": "./browser.js",
   "exports": {
     "node": {
+      "types": "./types.d.ts",
       "import": "./index.js",
       "polyfill": "./polyfill.js"
     },
     "default": {
+      "types": "./types.d.ts",
       "import": "./index.js",
       "polyfill": "./polyfill.js"
     },
     "browser": {
+      "types": "./types.d.ts",
       "import": "./browser.js",
       "polyfill": "./polyfill-browser.js"
     }
-  },
-  "scripts": {
-    "test": "concurrently --kill-others --raw \"npm run wpt:server\" \"npm run wrtc:test\"",
-    "wrtc:test": "tape test/wpt.js | tap-spec",
-    "wpt:server": "python test/wpt/wpt.py serve",
-    "wpt:make-hosts": "python test/wpt/wpt.py make-hosts-file"
   },
   "files": [
     "lib/*",
@@ -61,5 +59,11 @@
     "tape": "^5.6.6",
     "typescript": "^5.4.3",
     "uint8-util": "^2.2.3"
+  },
+  "scripts": {
+    "test": "concurrently --kill-others --raw \"npm run wpt:server\" \"npm run wrtc:test\"",
+    "wrtc:test": "tape test/wpt.js | tap-spec",
+    "wpt:server": "python test/wpt/wpt.py serve",
+    "wpt:make-hosts": "python test/wpt/wpt.py make-hosts-file"
   }
 }
