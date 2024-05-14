@@ -1,10 +1,14 @@
 {
   "name": "webrtc-polyfill",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "description": "High performance WebRTC polyfill for Node.JS via libdatachannel using Node Native/NAPI.",
   "type": "module",
   "types": "./types.d.ts",
   "browser": "./browser.js",
+  "chromeapp": "./browser.js",
+  "engines": {
+    "node": ">=16.0.0"
+  },
   "exports": {
     "node": {
       "types": "./types.d.ts",
@@ -47,18 +51,16 @@
   "homepage": "https://github.com/ThaUnknown/webrtc-polyfill#readme",
   "bugs": "https://github.com/ThaUnknown/webrtc-polyfill/issues",
   "repository": "https://github.com/ThaUnknown/webrtc-polyfill.git",
-  "optionalDependencies": {
-    "node-datachannel": "0.7.0",
-    "node-domexception": "^1.0.0"
-  },
   "devDependencies": {
-    "@types/webrtc": "*",
-    "concurrently": "^8.2.1",
-    "jsdom": "^22.1.0",
+    "@types/webrtc": "^0.0.43",
+    "concurrently": "^8.2.2",
+    "jsdom": "^24.0.0",
+    "node-datachannel": "0.9.0",
+    "node-domexception": "^2.0.1",
     "tap-spec": "^5.0.0",
-    "tape": "^5.6.6",
-    "typescript": "^5.4.3",
-    "uint8-util": "^2.2.3"
+    "tape": "^5.7.5",
+    "typescript": "^5.4.5",
+    "uint8-util": "^2.2.5"
   },
   "scripts": {
     "test": "concurrently --kill-others --raw \"npm run wpt:server\" \"npm run wrtc:test\"",
