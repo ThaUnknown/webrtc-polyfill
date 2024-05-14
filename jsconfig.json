@@ -9,8 +9,8 @@
 		"skipLibCheck": true,
 		"sourceMap": true,
     "target": "ESNext",
-    "moduleResolution": "node",
-    "module": "ESNext",
+    "moduleResolution": "nodenext",
+    "module": "NodeNext",
 		"types": ["@types/webrtc"],
     "allowSyntheticDefaultImports": true
 	}
