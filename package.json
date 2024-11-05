@@ -1,6 +1,6 @@
 {
   "name": "webrtc-polyfill",
-  "version": "1.1.8",
+  "version": "1.1.9",
   "description": "High performance WebRTC polyfill for Node.JS via libdatachannel using Node Native/NAPI.",
   "type": "module",
   "types": "./types.d.ts",
@@ -52,16 +52,16 @@
   "bugs": "https://github.com/ThaUnknown/webrtc-polyfill/issues",
   "repository": "https://github.com/ThaUnknown/webrtc-polyfill.git",
   "dependencies": {
-    "node-datachannel": "^0.10.1",
+    "node-datachannel": "^0.20.0",
     "node-domexception": "^1.0.0"
   },
   "devDependencies": {
-    "@types/webrtc": "^0.0.43",
-    "concurrently": "^8.2.2",
-    "jsdom": "^24.0.0",
+    "@types/webrtc": "^0.0.44",
+    "concurrently": "^9.1.0",
+    "jsdom": "^25.0.1",
     "tap-spec": "^5.0.0",
-    "tape": "^5.7.5",
-    "typescript": "^5.4.5",
+    "tape": "^5.9.0",
+    "typescript": "^5.6.3",
     "uint8-util": "^2.2.5"
   },
   "scripts": {
