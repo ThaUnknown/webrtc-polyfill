@@ -1,10 +1,10 @@
 import { equal } from 'uint8-util'
-import DOMException from 'node-domexception'
 
 import { Blob } from 'node:buffer'
 
 import WebRTC from '../index.js'
 import { MediaStream, MediaStreamTrack } from '../lib/MediaStream.js'
+import { DOMException } from 'lib/DOMException.js'
 
 function blobToArrayBuffer (blob) {
   return blob.arrayBuffer()
