@@ -1,6 +1,6 @@
 {
   "name": "webrtc-polyfill",
-  "version": "1.1.11",
+  "version": "1.2.0",
   "description": "High performance WebRTC polyfill for Node.JS via libdatachannel using Node Native/NAPI.",
   "type": "module",
   "types": "./types.d.ts",
@@ -52,9 +52,10 @@
   "bugs": "https://github.com/ThaUnknown/webrtc-polyfill/issues",
   "repository": "https://github.com/ThaUnknown/webrtc-polyfill.git",
   "dependencies": {
-    "node-datachannel": "^0.27.0"
+    "node-datachannel": "^0.32.0"
   },
   "devDependencies": {
+    "@thaunknown/simple-peer": "^10.0.13",
     "@types/webrtc": "^0.0.46",
     "concurrently": "^9.1.2",
     "jsdom": "^26.1.0",
@@ -66,6 +67,7 @@
   "scripts": {
     "test": "concurrently --kill-others --raw \"npm run wpt:server\" \"npm run wrtc:test\"",
     "wrtc:test": "tape test/wpt.js | tap-spec",
+    "sp:test": "node test/simplepeer.js | tap-spec",
     "wpt:server": "python test/wpt/wpt.py serve",
     "wpt:make-hosts": "python test/wpt/wpt.py make-hosts-file"
   }
