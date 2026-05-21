@@ -1,2 +1,4 @@
+allowBuilds:
+  node-datachannel: true
 onlyBuiltDependencies:
   - node-datachannel

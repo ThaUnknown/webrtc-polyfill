@@ -396,6 +396,7 @@ class Peer extends Duplex {
         isClosing = false
       }
     }, CHANNEL_CLOSING_TIMEOUT)
+    this._closingInterval.unref?.()
   }
 
   _write (chunk, cb) {
@@ -428,7 +429,7 @@ class Peer extends Duplex {
     // Wait a bit before destroying so the socket flushes.
     // TODO: is there a more reliable way to accomplish this?
     const destroySoon = () => {
-      setTimeout(() => this.__destroy(), 1000)
+      setTimeout(() => this.__destroy(), 1000).unref?.()
     }
 
     if (this._connected) {
@@ -720,7 +721,6 @@ class Peer extends Duplex {
         } else {
           this._connecting = false
           this._connected = true
-          this.emit('connect')
         }
 
         if (this._chunk) {
@@ -741,7 +741,7 @@ class Peer extends Duplex {
         // fallback to using setInterval to implement backpressure.
         if (typeof this._channel.bufferedAmountLowThreshold !== 'number') {
           this._interval = setInterval(() => this._onInterval(), 150)
-          if (this._interval.unref) this._interval.unref()
+          this._interval.unref?.()
         }
 
         this._debug('connect')
@@ -912,6 +912,7 @@ test('signal event does not get emitted by non-initiator', function (t) {
   setTimeout(() => {
     t.pass('did not get signal after 1000ms')
     t.end()
+    peer.destroy()
   }, 1000)
 })
 
